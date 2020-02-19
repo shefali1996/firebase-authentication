@@ -1,9 +1,6 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { logicalExpression } from "@babel/types";
-import Navbar from "./container/NavSection";
-import Home from "../src/container/Login";
+import Home from "../src/container/Home";
 import Login from "../src/container/Login";
 import SignUp from "../src/container/SignUp";
 import NavSection from "../src/container/NavSection";
@@ -15,9 +12,9 @@ function App() {
       <Router>
         <NavSection />
         <Switch>
+          <Route exact path="/signUp" component={SignUp} />
+          <Route exact path="/home" component={Home} />
           <Route exact path="/" component={Login} />
-          <Route path="/signUp" component={SignUp} />
-          <Route path="/home" component={Home} />
         </Switch>
       </Router>
   );

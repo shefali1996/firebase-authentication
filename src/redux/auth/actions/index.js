@@ -1,19 +1,42 @@
 import {call, put} from 'redux-saga/effects';
 import {firebase} from '../../../container/Firebase/index'
-console.log(firebase,"pppppp")
+import * as actions from '../../actions'
 
 export function* signUpRequest (action) {
-  console.log(action.payload,"iii")
     try {
-      const response = yield call(firebase.doCreateUserWithEmailAndPassword(...action.payload));
-      console.log(console.log(response,"ttttt"))
-      // if (response.error == 1) {
-      //   yield put(actions.forgotPasswordError(response.data.message));
-      // } else {
-      //   yield put(actions.forgotPasswordSuccess(response.data.message));
-      // }
+      const response = yield firebase.doCreateUserWithEmailAndPassword(action.payload.email,action.payload.password);
+      yield localStorage.setItem("token",response.user.refreshToken)
+      if (response) {
+        yield put(actions.signUpSuccess(response.user));
+        yield localStorage.setItem("email",response.user.email)
+      } else {
+        yield put(actions.errorAuthentication("Error Occurs"));
+      }
     } catch (e) {
-      // yield put(actions.forgotPasswordError('Error Occurs !!'));
-      console.warn('Some error found in "forgotPassword" action\n', e);
+      yield put(actions.errorAuthentication(e.message));
+    }
+  }
+
+  export function* signInRequest (action) {
+    try {
+      const response = yield firebase.doSignInWithEmailAndPassword(action.payload.email,action.payload.password);
+      if (response) {
+        yield localStorage.setItem("token",response.user.refreshToken)
+        yield localStorage.setItem("email",response.user.email)
+        yield put(actions.signInSuccess(response.user));
+      } else {
+        yield put(actions.errorAuthentication("Error Occurs"));
+      }
+    } catch (e) {
+      yield put(actions.errorAuthentication(e.message));
+    }
+  }
+  
+  export function* signOutRequest (action) {
+    try {
+      yield put(actions.signOutSuccess());
+      yield firebase.doSignOut();
+      yield localStorage.clear()
+    } catch (e) {
     }
   }
