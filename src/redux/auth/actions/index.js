@@ -5,10 +5,10 @@ import * as actions from '../../actions'
 export function* signUpRequest (action) {
     try {
       const response = yield firebase.doCreateUserWithEmailAndPassword(action.payload.email,action.payload.password);
-      yield localStorage.setItem("token",response.user.refreshToken)
       if (response) {
-        yield put(actions.signUpSuccess(response.user));
+        yield localStorage.setItem("token",response.user.refreshToken)
         yield localStorage.setItem("email",response.user.email)
+        yield put(actions.signUpSuccess(response.user));
       } else {
         yield put(actions.errorAuthentication("Error Occurs"));
       }
