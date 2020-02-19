@@ -4,7 +4,7 @@ import Home from "../src/container/Home";
 import Login from "../src/container/Login";
 import SignUp from "../src/container/SignUp";
 import NavSection from "../src/container/NavSection";
-import { BrowserRouter as Router, Route ,Switch} from "react-router-dom";
+import { HashRouter as Router, Route ,Switch} from "react-router-dom";
 
 
 function App() {
