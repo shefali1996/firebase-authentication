@@ -40,3 +40,46 @@ export function* signUpRequest (action) {
     } catch (e) {
     }
   }
+
+  export function* uploadFile(action){
+    yield put(actions.show_loading)
+    console.log(action.payload,"qqqqqqqqq")
+    try {
+      const response=yield firebase.uploadFile(action.payload.file,action.payload.uid);
+      console.log(response,"ghjk")
+        yield put(actions.getUploadFileData({uid:action.payload.uid}));
+        // yield put(actions.errorAuthentication("Error Occurs"));
+        yield put(actions.hide_loading)
+    } catch (e) {
+      yield put(actions.hide_loading)
+      // yield put(actions.errorAuthentication(e.message));
+    }
+  }
+
+  export function* getUploadFileData(action){
+    console.log("there")
+    try {
+      const response = yield firebase.getUploadFileData(action.payload.uid);
+      console.log(response,"GETDATA")
+      if (response) {
+        yield put(actions.successGetUploadFileData(response));
+      } else {
+        yield put(actions.errorGetUploadFileData(""))
+      }
+    } catch (e) {
+      console.log("here")
+      yield put(actions.errorGetUploadFileData(""))
+    }
+  }
+
+  export function* deleteFile(action){
+    try {
+      yield firebase.deleteFile(action.payload.uid);
+      yield put(actions.successDeleteFiledata());
+    } catch (e) {
+      // yield put(actions.errorAuthentication(e.message));
+    }
+  }
+
+
+  

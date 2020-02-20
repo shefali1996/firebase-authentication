@@ -7,3 +7,12 @@
 .image-dropzone{
     border: 1px solid lightgray;
 }
+
+.del-btn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2em;
+    cursor: pointer;
+    color:red;
+}

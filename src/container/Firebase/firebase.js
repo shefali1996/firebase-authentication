@@ -24,18 +24,17 @@ class Firebase {
   doSignOut = () => this.auth.signOut();
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
-  uploadFile = file => {
+  uploadFile = (file, uid) => {
+    console.log(file, uid, "iddddd");
     // Create the file metadata
     var metadata = {
       contentType: "image/jpeg"
     };
 
     // Upload file and metadata to the object 'images/mountains.jpg'
-    var uploadTask = this.storageRef
-      .child("images/" + file.name)
-      .put(file, metadata);
-
-    // Listen for state changes, errors, and completion of the upload.
+    var uploadTask = this.storageRef.child(`images/${uid}`).put(file, metadata);
+    return uploadTask;
+    /*
     uploadTask.on(
       app.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       function(snapshot) {
@@ -74,7 +73,26 @@ class Firebase {
           console.log("File available at", downloadURL);
         });
       }
-    );
+    );*/
+    // Listen for state changes, errors, and completion of the upload.
+  };
+  getUploadFileData = uid =>
+    this.storageRef.child(`images/${uid}`).getDownloadURL();
+
+  deleteFile = (uid) => {
+    console.log(uid,"uid")
+    var desertRef = this.storageRef.child(`images/${uid}`);
+
+    // Delete the file
+    desertRef
+      .delete()
+      .then(function(res) {
+        console.log(res,"vvvvv")
+        // File deleted successfully
+      })
+      .catch(function(error) {
+        // Uh-oh, an error occurred!
+      });
   };
 }
 export default Firebase;
