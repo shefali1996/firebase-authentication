@@ -1,7 +1,9 @@
 import * as constants from "../constants";
 
 let initialState = {
- url:""
+ url:"",
+ fileData:""
+
 };
 
 export const uploadFile = (state = initialState, action) => {
@@ -20,6 +22,11 @@ export const uploadFile = (state = initialState, action) => {
       return {
           ...state,
           url:""
+      }
+      case constants.SUCCESS_UPLOAD_FILE:
+      return{
+        ...state,
+        fileData:action.payload
       }
     
   }

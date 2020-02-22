@@ -4,7 +4,8 @@ import Dropzone from "react-dropzone";
 import { firebase } from "../container/Firebase/index";
 import { Button } from "reactstrap";
 import * as actions from "../redux/actions";
-import image from '../../src/assets/no-image.png'
+import image from "../../src/assets/no-image.png";
+import { Spinner } from "reactstrap";
 
 class Home extends Component {
   state = {
@@ -36,22 +37,31 @@ class Home extends Component {
     });
   }
   render() {
+    console.log(this.props.loading, "loadddd");
     return (
       <div className="home-page p-3">
         <div className="row no-gutters">
           <div className="col-md-4 profile-image">
             <img
               className="w-100"
-              src={this.props.uploadFile && this.props.uploadFile.url?this.props.uploadFile.url:image}
-            />
-            {this.props.uploadFile && this.props.uploadFile.url && <div
-              className="del-btn"
-              onClick={() =>
-                this.props.onDeleteFile({uid:this.state.user && this.state.user.uid})
+              src={
+                this.props.uploadFile && this.props.uploadFile.url
+                  ? this.props.uploadFile.url
+                  : image
               }
-            >
-              <i className="fa fa-times"></i>
-            </div>}
+            />
+            {this.props.uploadFile && this.props.uploadFile.url && (
+              <div
+                className="del-btn"
+                onClick={() =>
+                  this.props.onDeleteFile({
+                    uid: this.state.user && this.state.user.uid
+                  })
+                }
+              >
+                <i className="fa fa-times"></i>
+              </div>
+            )}
           </div>
           <div className="col-md-4 px-2 text-center">
             {this.state.user && this.state.user.email && (
@@ -83,9 +93,13 @@ class Home extends Component {
                 );
               }}
             </Dropzone>
-            <Button onClick={this.uploadFile} className="mt-2">
-              Upload
-            </Button>
+            {this.props.loading && this.props.loading.loading ? (
+              <Spinner />
+            ) : (
+              <Button onClick={this.uploadFile} className="mt-2">
+                Upload
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -101,7 +115,7 @@ const mapDispatchToProps = dispatch => {
       return dispatch(actions.getUploadFileData(data));
     },
     onDeleteFile: data => {
-      console.log(data,"gghh")
+      console.log(data, "gghh");
       return dispatch(actions.deleteFile(data));
     }
   };
@@ -110,7 +124,8 @@ function mapStateToProps(state) {
   return {
     signUp: state.login.signUp,
     signIn: state.login.signIn,
-    uploadFile: state.uploadFile
+    uploadFile: state.uploadFile,
+    loading: state.loading
   };
 }
 export default connect(

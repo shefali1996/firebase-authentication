@@ -15,4 +15,5 @@ export const deleteFile= createAction(constants.DELETE_FILE);
 export const errorGetUploadFileData=createAction(constants.ERROR_GET_UPLOAD_FILE_DATA);
 export const successDeleteFiledata= createAction(constants.SUCCESS_DELETE_FILE_DATA);
 export const show_loading=createAction(constants.SHOW_LOADING);
-export const hide_loading=createAction(constants.HIDE_LOADING)
+export const hide_loading=createAction(constants.HIDE_LOADING);
+export const successUploadFile=createAction(constants.SUCCESS_UPLOAD_FILE);
