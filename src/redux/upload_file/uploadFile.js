@@ -2,7 +2,8 @@ import * as constants from "../constants";
 
 let initialState = {
  url:"",
- fileData:""
+ fileData:"",
+ status_message:""
 
 };
 
@@ -21,13 +22,19 @@ export const uploadFile = (state = initialState, action) => {
       case constants.SUCCESS_DELETE_FILE_DATA:
       return {
           ...state,
-          url:""
+          url:"",
+          status_message:action.payload.status_message
       }
       case constants.SUCCESS_UPLOAD_FILE:
       return{
         ...state,
-        fileData:action.payload
+        fileData:action.payload.response,
+        status_message:action.payload.status_message
       }
+      case constants.ERROR_OCCURED:
+        return {
+          status_message:action.payload.status_message
+        }
     
   }
 

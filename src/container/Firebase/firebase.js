@@ -25,8 +25,6 @@ class Firebase {
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
   uploadFile = (file, uid) => {
-    console.log(file, uid, "iddddd");
-    // Create the file metadata
     var metadata = {
       contentType: "image/jpeg"
     };
@@ -39,19 +37,11 @@ class Firebase {
     this.storageRef.child(`images/${uid}`).getDownloadURL();
 
   deleteFile = (uid) => {
-    console.log(uid,"uid")
     var desertRef = this.storageRef.child(`images/${uid}`);
 
     // Delete the file
     desertRef
       .delete()
-      .then(function(res) {
-        console.log(res,"vvvvv")
-        // File deleted successfully
-      })
-      .catch(function(error) {
-        // Uh-oh, an error occurred!
-      });
   };
 }
 export default Firebase;
