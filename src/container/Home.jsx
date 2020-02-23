@@ -5,7 +5,7 @@ import { firebase } from "../container/Firebase/index";
 import { Button } from "reactstrap";
 import * as actions from "../redux/actions";
 import image from "../../src/assets/no-image.png";
-import { Spinner } from "reactstrap";
+import { Spinner,Alert } from "reactstrap";
 
 class Home extends Component {
   state = {
@@ -40,9 +40,15 @@ class Home extends Component {
     });
   }
   render() {
-    console.log(this.props.uploadFile.status, "loadddd");
     return (
       <div className="home-page p-3">
+        {this.props.uploadFile.status_message && <div className="row no-gutters">
+          <div className="col-md-12">
+            <Alert className="tranparent" fade={false} color={this.props.uploadFile.status_message.status?"success":"danger"}>
+            {this.props.uploadFile.status_message.message}
+            </Alert>
+          </div>
+        </div>}
         <div className="row no-gutters">
           <div className="col-md-4 profile-image">
             <img
@@ -118,7 +124,6 @@ const mapDispatchToProps = dispatch => {
       return dispatch(actions.getUploadFileData(data));
     },
     onDeleteFile: data => {
-      console.log(data, "gghh");
       return dispatch(actions.deleteFile(data));
     }
   };

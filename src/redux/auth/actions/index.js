@@ -44,21 +44,20 @@ export function* signUpRequest (action) {
 
   export function* uploadFile(action){
     yield put(actions.show_loading())
-    console.log(action.payload,"qqqqqqqqq")
     try {
       const response=yield firebase.uploadFile(action.payload.file,action.payload.uid);
         if(response){
-          yield put(actions.successUploadFile({message:"File Uploaded Successfully",response:response}));
+          yield put(actions.successUploadFile({status_message:{status:true,message:"File Uploaded Successfully"},response:response}));
           yield put(actions.getUploadFileData({uid:action.payload.uid}));
           yield put(actions.hide_loading())
         }
         else{
-          yield put(actions.errorOccured({message:"Error Occurs"}));
+          yield put(actions.errorOccured({status_message:{status:false,message:"Error Occurs"}}));
           yield put(actions.hide_loading())
         }
     } catch (e) {
       yield put(actions.hide_loading())
-      yield put(actions.errorOccured({message:e.message}));
+      yield put(actions.errorOccured({status_message:{status:false,message:e.message}}));
     }
   }
 
@@ -79,9 +78,9 @@ export function* signUpRequest (action) {
   export function* deleteFile(action){
     try {
      yield firebase.deleteFile(action.payload.uid);
-      yield put(actions.successDeleteFiledata({message:"File deleted successfully"}));
+      yield put(actions.successDeleteFiledata({status_message:{status:true,message:"File deleted successfully"}}));
     } catch (e) {
-      yield put(actions.errorOccured({message:e.message}));
+      yield put(actions.errorOccured({status_message:{status:false,message:e.message}}));
     }
   }
 

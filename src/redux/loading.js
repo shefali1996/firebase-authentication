@@ -5,7 +5,6 @@ let initialState = {
 };
 
 export const loading = (state = initialState, action) => {
-  console.log(action.type,"rrrrrrrrr")
   switch (action.type) {
     case constants.SHOW_LOADING:
       return {

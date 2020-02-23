@@ -3,7 +3,7 @@ import * as constants from "../constants";
 let initialState = {
  url:"",
  fileData:"",
- status:""
+ status_message:""
 
 };
 
@@ -23,17 +23,17 @@ export const uploadFile = (state = initialState, action) => {
       return {
           ...state,
           url:"",
-          status:action.payload.message
+          status_message:action.payload.status_message
       }
       case constants.SUCCESS_UPLOAD_FILE:
       return{
         ...state,
         fileData:action.payload.response,
-        status:action.payload.message
+        status_message:action.payload.status_message
       }
       case constants.ERROR_OCCURED:
         return {
-        status:action.payload.message
+          status_message:action.payload.status_message
         }
     
   }

@@ -37,7 +37,6 @@ class Firebase {
     this.storageRef.child(`images/${uid}`).getDownloadURL();
 
   deleteFile = (uid) => {
-    console.log(uid,"uid")
     var desertRef = this.storageRef.child(`images/${uid}`);
 
     // Delete the file
