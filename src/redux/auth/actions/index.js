@@ -34,10 +34,11 @@ export function* signUpRequest (action) {
   
   export function* signOutRequest (action) {
     try {
-      yield put(actions.signOutSuccess());
       yield firebase.doSignOut();
+      yield put(actions.signOutSuccess());
       yield localStorage.clear()
     } catch (e) {
+      yield put(actions.errorAuthentication(e.message));
     }
   }
 
@@ -46,39 +47,41 @@ export function* signUpRequest (action) {
     console.log(action.payload,"qqqqqqqqq")
     try {
       const response=yield firebase.uploadFile(action.payload.file,action.payload.uid);
-      console.log(response,"ghjk")
-        yield put(actions.successUploadFile(response));
-        yield put(actions.getUploadFileData({uid:action.payload.uid}));
-        // yield put(actions.errorAuthentication("Error Occurs"));
-        yield put(actions.hide_loading())
+        if(response){
+          yield put(actions.successUploadFile({message:"File Uploaded Successfully",response:response}));
+          yield put(actions.getUploadFileData({uid:action.payload.uid}));
+          yield put(actions.hide_loading())
+        }
+        else{
+          yield put(actions.errorOccured({message:"Error Occurs"}));
+          yield put(actions.hide_loading())
+        }
     } catch (e) {
       yield put(actions.hide_loading())
-      // yield put(actions.errorAuthentication(e.message));
+      yield put(actions.errorOccured({message:e.message}));
     }
   }
 
   export function* getUploadFileData(action){
-    console.log("there")
+    
     try {
       const response = yield firebase.getUploadFileData(action.payload.uid);
-      console.log(response,"GETDATA")
       if (response) {
         yield put(actions.successGetUploadFileData(response));
       } else {
         yield put(actions.errorGetUploadFileData(""))
       }
     } catch (e) {
-      console.log("here")
       yield put(actions.errorGetUploadFileData(""))
     }
   }
 
   export function* deleteFile(action){
     try {
-      yield firebase.deleteFile(action.payload.uid);
-      yield put(actions.successDeleteFiledata());
+     yield firebase.deleteFile(action.payload.uid);
+      yield put(actions.successDeleteFiledata({message:"File deleted successfully"}));
     } catch (e) {
-      // yield put(actions.errorAuthentication(e.message));
+      yield put(actions.errorOccured({message:e.message}));
     }
   }
 

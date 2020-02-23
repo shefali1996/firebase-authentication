@@ -20,6 +20,9 @@ class Home extends Component {
   uploadFile = () => {
     // firebase.uploadFile(this.state.file);
     this.props.onUploadFile(this.state.file, this.state.user.uid);
+    this.setState({
+      file:""
+    })
   };
   componentDidMount() {
     firebase.auth.onAuthStateChanged(user => {
@@ -37,7 +40,7 @@ class Home extends Component {
     });
   }
   render() {
-    console.log(this.props.loading, "loadddd");
+    console.log(this.props.uploadFile.status, "loadddd");
     return (
       <div className="home-page p-3">
         <div className="row no-gutters">
